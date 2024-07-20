@@ -24,34 +24,6 @@ def stm_single(autd: Controller) -> None:
     autd.send((m, stm))
 
 
-def stm_single_iter(center, edge_length, freq, width):
-    iter_list = []
-    size = 40000 / freq
-    interval = edge_length * (edge_length / width + 2) / (size - 1)
-    edge_width_size = (edge_length + width) / interval
-
-    for i in range(int(size)):
-        r = int(i / edge_width_size)
-        l = int(i % edge_width_size)
-        if r % 2 == 0:
-            if l < edge_length / interval:
-                x = l * interval
-                y = r * width
-            else:
-                x = edge_length
-                y = width * r + (l - edge_length / interval) * interval
-        else:
-            if l < edge_length / interval:
-                x = edge_length - l * interval
-                y = r * width
-            else:
-                x = 0
-                y = width * r + (l - edge_length / interval) * interval
-        point = center + np.array([x, y, 0])
-        iter_list.append(point)
-    return iter(iter_list)
-
-
 def stm_multi(autd: Controller) -> None:
     config = Silencer.disable()
     autd.send(config)
