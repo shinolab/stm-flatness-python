@@ -1,9 +1,10 @@
 import os
 
-from samples import runner  # type: ignore[import,import-not-found]
-
-from pyautd3 import AUTD3, Controller, tracing_init
+import numpy as np
+from pyautd3 import AUTD3, Controller, EulerAngles, deg, rad, tracing_init
 from pyautd3.link.soem import SOEM, Status
+
+from samples import runner  # type: ignore[import,import-not-found]
 
 
 def err_handler(slave: int, status: Status, msg: str) -> None:
@@ -23,7 +24,36 @@ if __name__ == "__main__":
 
     tracing_init()
 
-    with Controller.builder([AUTD3([0.0, 0.0, 0.0])]).open(
+    with Controller.builder(
+        [
+            # AUTD3([-AUTD3.DEVICE_WIDTH, AUTD3.DEVICE_HEIGHT, 0]).with_rotation(EulerAngles.ZYZ(-np.pi / 2 * rad, np.pi / 4 * rad, np.pi / 2 * rad)),
+            # AUTD3([0, AUTD3.DEVICE_HEIGHT, 0]).with_rotation(EulerAngles.ZYZ(-np.pi / 2 * rad, np.pi / 4 * rad, np.pi / 2 * rad)),
+            # AUTD3([AUTD3.DEVICE_WIDTH, 0, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, -np.pi / 4 * rad, 0 * rad)),
+            # AUTD3([0, 0, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, 0 * rad, 0 * rad)),
+            # AUTD3([-AUTD3.DEVICE_WIDTH, 0, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, 0 * rad, 0 * rad)),
+            # AUTD3([-(1 + np.sqrt(2) / 2) * AUTD3.DEVICE_WIDTH, 0, np.sqrt(2) / 2 * AUTD3.DEVICE_WIDTH]).with_rotation(EulerAngles.ZYZ(0 * rad, np.pi / 4 * rad, 0 * rad)),
+            # AUTD3([-(1 + np.sqrt(2) / 2) * AUTD3.DEVICE_WIDTH, -AUTD3.DEVICE_HEIGHT, np.sqrt(2) / 2 * AUTD3.DEVICE_WIDTH]).with_rotation(EulerAngles.ZYZ(0 * rad, np.pi / 4 * rad, 0 * rad)),
+            # AUTD3([-AUTD3.DEVICE_WIDTH, -AUTD3.DEVICE_HEIGHT, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, 0 * rad, 0 * rad)),
+            # AUTD3([0, -AUTD3.DEVICE_HEIGHT, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, 0 * rad, 0 * rad)),
+            # AUTD3([AUTD3.DEVICE_WIDTH, -AUTD3.DEVICE_HEIGHT, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, -np.pi / 4 * rad, 0 * rad)),
+            # AUTD3([0, -(1 + np.sqrt(2) / 2) * AUTD3.DEVICE_HEIGHT, np.sqrt(2) / 2 * AUTD3.DEVICE_HEIGHT]).with_rotation(EulerAngles.ZYZ(-np.pi / 2 * rad, -np.pi / 4 * rad, np.pi / 2 * rad)),
+            # AUTD3([-AUTD3.DEVICE_WIDTH, -(1 + np.sqrt(2) / 2) * AUTD3.DEVICE_HEIGHT, np.sqrt(2) / 2 * AUTD3.DEVICE_HEIGHT]).with_rotation(EulerAngles.ZYZ(-np.pi / 2 * rad, -np.pi / 4 * rad, np.pi / 2 * rad)),
+            AUTD3([AUTD3.DEVICE_WIDTH, 0, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, -np.pi / 4 * rad, 0 * rad)),
+            AUTD3([0, 0, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, 0 * rad, 0 * rad)),
+            # AUTD3([-AUTD3.DEVICE_WIDTH, 0, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, 0 * rad, 0 * rad)),
+            # AUTD3([-2 * AUTD3.DEVICE_WIDTH, 0, AUTD3.DEVICE_WIDTH / np.sqrt(2)]).with_rotation(
+            #     EulerAngles.ZYZ(0 * rad, np.pi / 4 * rad, 0 * rad)
+            # ),
+            # AUTD3([-2 * AUTD3.DEVICE_WIDTH, AUTD3.DEVICE_HEIGHT, AUTD3.DEVICE_WIDTH / np.sqrt(2)]).with_rotation(
+            #     EulerAngles.ZYZ(0 * rad, np.pi / 4 * rad, 0 * rad)
+            # ),
+            # AUTD3([-AUTD3.DEVICE_WIDTH, AUTD3.DEVICE_HEIGHT, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, 0 * rad, 0 * rad)),
+            # AUTD3([0, AUTD3.DEVICE_HEIGHT, 0]).with_rotation(EulerAngles.ZYZ(0 * rad, 0 * rad, 0 * rad)),
+            # AUTD3([AUTD3.DEVICE_WIDTH, AUTD3.DEVICE_HEIGHT, 0]).with_rotation(
+            #     EulerAngles.ZYZ(0 * rad, -np.pi / 4 * rad, 0 * rad)
+            # ),
+        ]
+    ).open(
         SOEM.builder().with_err_handler(err_handler),
     ) as autd:
         runner.run(autd)

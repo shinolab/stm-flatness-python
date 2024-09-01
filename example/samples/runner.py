@@ -1,10 +1,12 @@
 from pyautd3 import Controller, Null, Silencer
 
-from . import bessel, custom, flag, focus, group, holo, plane, stm, user_defined, wav
+from . import bessel, custom, flag, flat, focus, group, holo, plane, stm, user_defined, wav
 
 
 def run(autd: Controller) -> None:
     samples = [
+        (flat.stm_single, "Flat single stm test"),
+        (flat.stm_multi, "Flat multi stm test"),
         (focus.simple, "Single focus test"),
         (bessel.bessel, "Bessel beam test"),
         (plane.plane, "Plane wave test"),
